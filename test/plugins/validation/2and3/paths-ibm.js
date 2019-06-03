@@ -3,14 +3,10 @@ const {
   validate
 } = require('../../../../src/plugins/validation/2and3/semantic-validators/paths-ibm');
 
+const config = require('../../../../src/.defaultsForValidator').defaults.shared;
+
 describe('validation plugin - semantic - paths-ibm', function() {
   it('should return an error when a path parameter is not correctly defined in an operation', function() {
-    const config = {
-      paths: {
-        missing_path_parameter: 'error'
-      }
-    };
-
     const spec = {
       paths: {
         '/cool_path/{id}': {
@@ -75,12 +71,6 @@ describe('validation plugin - semantic - paths-ibm', function() {
   });
 
   it('should not return an error for a missing path parameter when a path defines a global parameter', function() {
-    const config = {
-      paths: {
-        missing_path_parameter: 'error'
-      }
-    };
-
     const spec = {
       paths: {
         '/cool_path/{id}': {
@@ -128,12 +118,6 @@ describe('validation plugin - semantic - paths-ibm', function() {
   });
 
   it('should not return an error when incorrect path parameter is in an excluded operation', function() {
-    const config = {
-      paths: {
-        missing_path_parameter: 'error'
-      }
-    };
-
     const spec = {
       paths: {
         '/cool_path/{id}': {
@@ -172,12 +156,6 @@ describe('validation plugin - semantic - paths-ibm', function() {
   });
 
   it('should not return an error when incorrect path parameter is in a vendor extension', function() {
-    const config = {
-      paths: {
-        missing_path_parameter: 'error'
-      }
-    };
-
     const spec = {
       paths: {
         '/cool_path/{id}': {
@@ -215,12 +193,6 @@ describe('validation plugin - semantic - paths-ibm', function() {
   });
 
   it('should return one problem for an undefined declared path parameter', function() {
-    const config = {
-      paths: {
-        missing_path_parameter: 'error'
-      }
-    };
-
     const spec = {
       paths: {
         '/cool_path/{id}': {}
@@ -239,12 +211,6 @@ describe('validation plugin - semantic - paths-ibm', function() {
   });
 
   it('should return one problem for an undefined declared path parameter', function() {
-    const config = {
-      paths: {
-        missing_path_parameter: 'error'
-      }
-    };
-
     const spec = {
       paths: {
         '/cool_path/{id}/more_path/{other_param}': {
@@ -272,12 +238,6 @@ describe('validation plugin - semantic - paths-ibm', function() {
   });
 
   it('should flag a path segment that is not snake_case but should ignore path parameter', function() {
-    const config = {
-      paths: {
-        snake_case_only: 'warning'
-      }
-    };
-
     const spec = {
       paths: {
         '/v1/api/NotGoodSegment/{shouldntMatter}/resource': {
@@ -341,12 +301,7 @@ describe('validation plugin - semantic - paths-ibm', function() {
   });
 
   it('should not flag a path segment that follows paths_case_convention and should ignore path parameter', function() {
-    const config = {
-      paths: {
-        snake_case_only: 'off',
-        paths_case_convention: ['warning', 'lower_dash_case']
-      }
-    };
+    config.paths.snake_case_only = 'off';
 
     const goodSpec = {
       paths: {
