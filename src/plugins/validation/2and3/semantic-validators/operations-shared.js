@@ -2,10 +2,6 @@
 
 // Operations must have unique (name + in combination) parameters.
 
-// Operations must have a non-empty `operationId`
-
-// `operationId` should adhere to a given case convention
-
 // Operations must have a non-empty `summary` field.
 
 // Arrays MUST NOT be returned as the top-level structure in a response body.
@@ -18,7 +14,7 @@ const pick = require('lodash/pick');
 const map = require('lodash/map');
 const each = require('lodash/each');
 const findIndex = require('lodash/findIndex');
-const { checkCase, hasRefProperty } = require('../../../utils');
+const { hasRefProperty } = require('../../../utils');
 
 module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
   const result = {};
@@ -110,30 +106,6 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
         });
       }
 
-      const hasOperationId =
-        op.operationId &&
-        op.operationId.length > 0 &&
-        !!op.operationId.toString().trim();
-      if (!hasOperationId) {
-        const checkStatus = config.no_operation_id;
-        if (checkStatus !== 'off') {
-          result[checkStatus].push({
-            path: `paths.${pathKey}.${opKey}.operationId`,
-            message: 'Operations must have a non-empty `operationId`.'
-          });
-        }
-      } else {
-        // check operationId for case convention
-        const checkStatus = config.operation_id_case_convention[0];
-        const caseConvention = config.operation_id_case_convention[1];
-        const isCorrectCase = checkCase(op.operationId, caseConvention);
-        if (!isCorrectCase && checkStatus != 'off') {
-          result[checkStatus].push({
-            path: `paths.${pathKey}.${opKey}.operationId`,
-            message: `operationIds must follow case convention: ${caseConvention}`
-          });
-        }
-      }
       const hasOperationTags = op.tags && op.tags.length > 0;
       const hasGlobalTags = resolvedSpec.tags && resolvedSpec.tags.length > 0;
       const resolvedTags = [];

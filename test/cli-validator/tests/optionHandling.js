@@ -236,10 +236,10 @@ describe('cli tool - test option handling', function() {
     );
 
     // {"operations-shared": [{"line": 36, "message": "Operations must have a non-empty `operationId`.", "path": "paths./pet.post.operationId"},
-    expect(outputObject['warnings']['operations-shared'][0]['line']).toEqual(
+    expect(outputObject['warnings']['operation-ids-ibm'][0]['line']).toEqual(
       36
     );
-    expect(outputObject['warnings']['operations-shared'][0]['message']).toEqual(
+    expect(outputObject['warnings']['operation-ids-ibm'][0]['message']).toEqual(
       'Operations must have a non-empty `operationId`.'
     );
   });
