@@ -14,6 +14,7 @@ const validator = require('./utils/validator');
 const print = require('./utils/printResults');
 const printJson = require('./utils/printJsonResults');
 const printError = require('./utils/printError');
+const applyFixes = require('./utils/applyFixes');
 const preprocessFile = require('./utils/preprocessFile');
 
 // import the init module for creating a .validaterc file
@@ -38,6 +39,7 @@ const processInput = async function(program) {
   const defaultMode = !!program.default_mode;
   const jsonOutput = !!program.json;
   const errorsOnly = !!program.errors_only;
+  const fixProblems = !!program.fix;
 
   const configFileOverride = program.config;
 
@@ -252,6 +254,9 @@ const processInput = async function(program) {
         );
         // fail on errors, but not if there are only warnings
         if (results.error) exitCode = 1;
+        if (fixProblems && results.fixes) {
+          applyFixes(results.fixes, swagger.jsSpec, validFile);
+        }
       } else {
         console.log(chalk.green(`\n${validFile} passed the validator`));
         if (validFile === last(filesToValidate)) console.log();

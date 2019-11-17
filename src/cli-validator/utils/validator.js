@@ -36,6 +36,7 @@ module.exports = function validateSwagger(allSpecs, config) {
   const validationResults = {
     errors: {},
     warnings: {},
+    fixes: {},
     error: false,
     warning: false
   };
@@ -75,6 +76,9 @@ module.exports = function validateSwagger(allSpecs, config) {
     if (problem.warnings.length) {
       validationResults.warnings[key] = [...problem.warnings];
       validationResults.warning = true;
+    }
+    if (problem.fixes && problem.fixes.length) {
+      validationResults.fixes[key] = [...problem.fixes];
     }
   });
 
