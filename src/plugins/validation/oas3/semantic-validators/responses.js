@@ -55,6 +55,12 @@ module.exports.validate = function({ resolvedSpec }, config) {
           'Each `responses` object SHOULD have at least one code for a successful response.',
           config.no_success_response_codes
         );
+      } else if (statusCodes.includes('422')) {
+        messages.addMessage(
+          path,
+          '400 - not 422 - should be returned in response to invalid request payloads.',
+          config.ibm_status_code_guidelines
+        );
       } else {
         // validate success codes
         for (const successCode of successCodes) {
